@@ -1,44 +1,77 @@
 {
-    "users": [
+    "users":[
         {
-            "id": 1,
-            "name": "John Doe",
-            "email": "john.doe@gmail.com"
-        },
-        {
-            "id": 2,
-            "name": "Jane Doe",
-            "email": "jane.doe@gmail.com"
+            "id":1,
+            "name":"John Doe",
+            "email":"novi_mail_john@gmail.com"
+        },{
+            "id":2,
+            "name":"Jane Doe",
+            "email":"jane.doe@gmail.com"
         }
     ],
-    "posts": [
+    "posts":[
         {
-            "id": 1,
-            "title": "Hello World",
-            "body": "muhamara",
-            "user_id": 1,
-            "last_update": "2019-01-01 00:00:00"
-        },
-        {
-            "id": 2,
-            "title": "Hello World 2",
-            "body": "post tekst",
-            "user_id": 2,
-            "last_update": "2019-01-02 00:00:00"
-        },
-        {
-            "id": 3,
-            "title": "Hello World 3",
-            "body": "bubamara",
-            "user_id": 1,
-            "last_update": "2019-01-03 00:00:00"
-        },
-        {
-            "id": 4,
-            "title": "Hello World 4",
-            "body": "nesto nesto",
-            "user_id": 1,
-            "last_update": "2019-01-04 00:00:00"
+            "id":1,
+            "title":"Hello World",
+            "body":"muhamara",
+            "user_id":1,
+            "last_update":"2019-01-01 00:00:00"
+        },{
+            "id":2,
+            "title":"Hello World 2",
+            "body":"post tekst",
+            "user_id":2,
+            "last_update":"2019-01-02 00:00:00"
+        },{
+            "id":3,
+            "title":"Hello World 3",
+            "body":"bubamara",
+            "user_id":1,
+            "last_update":"2019-01-03 00:00:00"
+        },{
+            "id":4,
+            "title":"Hello World 4",
+            "body":"nesto nesto",
+            "user_id":1,
+            "last_update":"2019-01-04 00:00:00"
+        },{
+            "id":5,
+            "title":"naslov 211",
+            "body":"somethin",
+            "user_id":2,
+            "last_update":"2023-05-14 19:54:31"
+        },{
+            "id":6,
+            "title":"naslov 231",
+            "body":"somethin...----",
+            "user_id":2,
+            "last_update":"2023-05-14 19:55:01"
+        },{
+            "id":7,
+            "title":"naslov 231",
+            "body":"somethin...----",
+            "user_id":2,
+            "last_update":"2023-05-14 20:17:25"
+        },{
+            "id":8,
+            "title":"neki naslov1",
+            "body":"tekst.... ",
+            "user_id":1,
+            "last_update":"2023-05-14 20:19:06"
+        },{
+            "id":9,
+            "title":"neki naslov2",
+            "body":"ovo je neki tekst.... ",
+            "user_id":1,
+            "last_update":"2023-05-14 20:20:28"
+        },{
+            "id":10,
+            "title":"helo2",
+            "body":"ovo je neki tekst2.... ",
+            "user_id":1,
+            "last_update":"2023-05-14 20:25:47"
         }
     ]
+
 }
