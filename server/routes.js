@@ -20,7 +20,7 @@ routes.get('/user/:id', async (request, response) => {
         return response.status(500).send("no such user")
     }
     catch (error) {
-     return response.status(500).send(error)
+        return response.status(500).send(error)
     }
     
   });
@@ -39,7 +39,7 @@ routes.get('/user/:id', async (request, response) => {
         return response.status(500).send("no such post")
     }
     catch (error) {
-     return response.status(500).send(error)
+        return response.status(500).send(error)
     }
     
   });
@@ -71,7 +71,7 @@ routes.get('/user/:id', async (request, response) => {
         return response.status(200).send(JSON.stringify(postsLimit))
     }
     catch (error) {
-     return response.status(500).send(error)
+        return response.status(500).send(error)
     }
   });
 
@@ -89,7 +89,7 @@ routes.get('/user/:id', async (request, response) => {
             return new Error("user does not exist")
         }
         else{
-            for( let u in usersArr){
+            for( let u in usersArr ){
                 if(usersArr[u].id == parseInt(user_id)){
                     usersArr[u].email = email
                     fs.writeFileSync('data.json', JSON.stringify(jsonData)); 
@@ -105,63 +105,63 @@ routes.get('/user/:id', async (request, response) => {
 
   //*****    PUT  *******/
 
-  routes.put('/user/:id/newpost/',async (request, response) => {
-    try {       
-        //check if user exists
-        const user_id = request.params.id
-        
-        if(!userCheck(user_id)){
-            response.status(500).send('user does not exist')
-            return new Error("user does not exist")
-        }
-        else{
-            let jsonData = JSON.parse(data)
-            let postsArr = jsonData.posts
-
-            const title = request.body.title
-            const body = request.body.body
-            const last_update = stringFormatDate(new Date().toLocaleString())
-    
-            const id = parseInt((postsArr.length)+1)
-            const newPost = {
-                "id":id, 
-                "title":title, 
-                "body":body,
-                "user_id": parseInt(user_id), 
-                "last_update": last_update
+    routes.put('/user/:id/newpost/',async (request, response) => {
+        try {       
+            //check if user exists
+            const user_id = request.params.id
+            
+            if(!userCheck(user_id)){
+                response.status(500).send('user does not exist')
+                return new Error("user does not exist")
             }
-            postsArr.push(newPost)
-            //console.log(postsArr)
-            fs.writeFileSync('data.json', JSON.stringify(jsonData));  
-            console.log(newPost)  
-            return response.status(200).send(JSON.stringify(newPost))     
-        }       
-    }  
+            else{
+                let jsonData = JSON.parse(data)
+                let postsArr = jsonData.posts
+
+                const title = request.body.title
+                const body = request.body.body
+                const last_update = stringFormatDate(new Date().toLocaleString())
+        
+                const id = parseInt((postsArr.length)+1)
+                const newPost = {
+                    "id":id, 
+                    "title":title, 
+                    "body":body,
+                    "user_id": parseInt(user_id), 
+                    "last_update": last_update
+                }
+                postsArr.push(newPost)
+                //console.log(postsArr)
+                fs.writeFileSync('data.json', JSON.stringify(jsonData));  
+                //console.log(newPost)  
+                return response.status(200).send(JSON.stringify(newPost))     
+            }       
+        }  
         catch(error) {
-          response.status(500).send(error)
+            response.status(500).send(error)
         }
-  });
+    });
 
   //******************************************
   //***********HELPER FUNCTIONS **************
 
 
-  function stringFormatDate(dateStr){
-    var newDateStr = dateStr[8]+dateStr[9]+dateStr[10]+dateStr[11]+'-'+ dateStr[4]+dateStr[5] +'-'+ dateStr[0]+dateStr[1]+' ' + dateStr[14]+ dateStr[15]+ dateStr[16]+ dateStr[17]+ dateStr[18]+ dateStr[19]+dateStr[20]+dateStr[21]
-    return newDateStr
-  }
+    function stringFormatDate(dateStr){
+        var newDateStr = dateStr[8]+dateStr[9]+dateStr[10]+dateStr[11]+'-'+ dateStr[4]+dateStr[5] +'-'+ dateStr[0]+dateStr[1]+' ' + dateStr[14]+ dateStr[15]+ dateStr[16]+ dateStr[17]+ dateStr[18]+ dateStr[19]+dateStr[20]+dateStr[21]
+        return newDateStr
+    }
 
-  function userCheck(userId){
-    const jsonData = JSON.parse(data)
-    let usersArr = jsonData.users
- 
-        for( let u in usersArr){
-            if(usersArr[u].id == parseInt(userId)){
-                return true 
+    function userCheck(userId){
+        const jsonData = JSON.parse(data)
+        let usersArr = jsonData.users
+    
+            for( let u in usersArr){
+                if(usersArr[u].id == parseInt(userId)){
+                    return true 
+                }
             }
-        }
         return false
-  }
+    }
 
 
   module.exports = routes

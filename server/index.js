@@ -4,7 +4,7 @@ const app = express();
 const port = 3000;
 var bodyParser = require('body-parser');
 var routes = require('./routes');
-
+var excelRoute = require('./excelRoute');
 
 
 //MIDDLEWARE
@@ -20,6 +20,7 @@ var corsOptions = {
   app.use(express.json());
   // ROUTES
   app.use("/",routes);
+  app.use("/excel",excelRoute);
 
 app.listen(port, () => {
   console.log(`API listening at http://localhost:${port}`);
