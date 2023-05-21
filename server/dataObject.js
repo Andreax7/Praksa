@@ -1,7 +1,7 @@
 
 
 
-const dataObject = {
+const testData = {
     "Predmet": "naziv predmeta sa sifrom",
     "Katedra": "Katedra",
     "Studiji": "Studiji",
@@ -49,4 +49,4 @@ const dataObject = {
 }
 
 
-module.exports = dataObject
+module.exports = testData
