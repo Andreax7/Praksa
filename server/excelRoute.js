@@ -87,6 +87,7 @@ excelRoute.get('/export', async (request, response) => {
         workbook.created = new Date(2023, 5, 16)
 
         const sheet = workbook.addWorksheet("nalog")  
+
         
                 // ****************style *****************//
 
@@ -129,8 +130,17 @@ excelRoute.get('/export', async (request, response) => {
                        }
                     }
     //_________________________________________________________________________________________          
-       
-    
+    //*****************adding image ***************/
+      var myBase64Image = "./Slika1.png"   
+      var imageId1 = workbook.addImage({ 
+        buffer: fs.readFileSync(myBase64Image),
+        extension: 'png'
+      })
+      
+      sheet.addImage(imageId1, { 
+        tl: { col: 0.3, row: 0 },
+        br: { col: 2, row: 4 }})
+    // ******************************************
       sheet.getRow('16').height = 50
       sheet.mergeCells('A6:I11')
       sheet.getCell('A5').value = {
@@ -522,10 +532,10 @@ excelRoute.get('/export', async (request, response) => {
         sheet.getCell("A"+ (start+6).toString()).value ={
           richText: [
             {
-              text: `Prodekanica za nastavu i studentska pitanja ` + '\r\n \r\n Prof. dr. sc.'
+              text: 'Prodekanica za nastavu i studentska pitanja \r\n Prof. dr. sc.'
             },
             {
-              text: `${testData.prodekan2}\r\n `,
+              text: ` ${testData.prodekan2} `,
               font: {
                 color: {
                   argb: '00FF0000',
@@ -552,7 +562,7 @@ excelRoute.get('/export', async (request, response) => {
           ],
         } 
         sheet.getCell("A"+ (start+2).toString()).alignment = { wrapText: true }
-        sheet.getCell("A"+ (start+2).toString()).alignment = { wrapText: true }
+        sheet.getCell("A"+ (start+6).toString()).alignment = { wrapText: true }
         sheet.getCell("J"+ (start+6).toString()).alignment = { wrapText: true }
         sheet.getColumn('B').width = 21.11
         sheet.getColumn('C').width = 21.11 
