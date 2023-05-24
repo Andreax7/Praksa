@@ -8,7 +8,6 @@ var testData = require('./dataObject')
 const text = require('./text')
 
 var fs = require("fs")
-const { json } = require("body-parser")
 
 //******** get data from excel **********/
 async function getDataFromFile(){
@@ -111,24 +110,23 @@ excelRoute.get('/export', async (request, response) => {
                     }
    //_________________________________________________________________________________________     
                 function borderCell(cellStr){
-                  sheet.getCell(cellStr).value = {
-                    richText: [
-                      {
-                        font: {
-                          color: {
-                            argb: '00FF0000',
-                            theme: 1,
-                          },
-                        },
-                      },
-                    ],
-                  }
                   sheet.getCell(cellStr).alignment = {  wrapText: true,  vertical: "middle" , horizontal: "center" }
                       return sheet.getCell(cellStr).border = {
                         top: {style:'thick', color: {argb:'#000000'}},
-                        bottom: {style:'thick', color: {argb:'#000000'}}
+                        bottom: {style:'thick', color: {argb:'#000000'}},
+                        left: {style:'medium', color: {argb:'#000000'}}
                        }
                     }
+
+
+                function table2Borders(cellStr){
+                      sheet.getCell(cellStr).alignment = {  wrapText: true,  vertical: "middle" , horizontal: "center" }
+                          return sheet.getCell(cellStr).border = {
+                            top: {style:'medium', color: {argb:'#000000'}},
+                            bottom: {style:'medum', color: {argb:'#000000'}},
+                            left: {style:'medium', color: {argb:'#000000'}}
+                           }
+                        }
     //_________________________________________________________________________________________          
     //*****************adding image ***************/
       var myBase64Image = "./Slika1.png"   
@@ -150,12 +148,7 @@ excelRoute.get('/export', async (request, response) => {
             },
             {
               text: ` ${doubleData[0].PredmetNaziv} ${doubleData[0].PredmetKratica}`,
-              font: {
-                color: {
-                  argb: '00FF0000',
-                  theme: 1,
-                },
-              },
+            
             },
           ],
         }
@@ -168,9 +161,19 @@ excelRoute.get('/export', async (request, response) => {
         headerCells.forEach(element => borderCellHeader(element))
         var subjectCells = ['A13','B13','C13','D13','E13','F13','G13','H13','I13']
         subjectCells.forEach(element => borderCell(element))
-        sheet.getCell('H13').border = {right: {style:'thick', color: {argb:'#000000'}}, bottom: {style:'thick', color: {argb:'#000000'}} }
-        sheet.getCell('A13').font = { color: {argb:'#FF0000'} }
-        
+        sheet.getCell('H13').border = {
+                              left: {style:'solid', color: {argb:'#000000'}},
+                              right: {style:'thick', color: {argb:'#000000'}},
+                              bottom: {style:'thick', color: {argb:'#000000'}} }
+        sheet.getCell('E13').border = { left: {style:'thick', color: {argb:'#000000'}},
+                                        bottom: {style:'thick', color: {argb:'#000000'}} }
+
+
+        // *************************************************
+        //**************************************************
+        //******************* BORDERS  ^ **************
+        //**************************************************
+        //***************************************************/
         sheet.getCell('A6').value = sheet.getCell('A13').value = {
           richText: [
             {
@@ -200,12 +203,6 @@ excelRoute.get('/export', async (request, response) => {
           richText: [
             {
               text: `${doubleData[0].Katedra} `,
-              font: {
-                color: {
-                  argb: '00FF0000',
-                  theme: 1,
-                },
-              },
             },
           ],
         }
@@ -213,39 +210,23 @@ excelRoute.get('/export', async (request, response) => {
         sheet.getCell('C13').value = {
           richText: [
             {
-              text: `${doubleData[0].Studij} `,
-              font: {
-                color: {
-                  argb: '00FF0000',
-                  theme: 1,
-                },
-              },
+              text: `${doubleData[0].Studij} `
+    
             },
           ],
         } 
         sheet.getCell('D13').value ={
           richText: [
             {
-              text: `${doubleData[0].SkolskaGodinaNaziv} `,
-              font: {
-                color: {
-                  argb: '00FF0000',
-                  theme: 1,
-                },
-              },
+              text: `${doubleData[0].SkolskaGodinaNaziv} `
+             
             },
           ],
         }
         sheet.getCell('E13').value = {
           richText: [
             {
-              text: `${doubleData[0].PkSkolskaGodina} `,
-              font: {
-                color: {
-                  argb: '00FF0000',
-                  theme: 1,
-                },
-              },
+              text: `${doubleData[0].PkSkolskaGodina} `
             },
           ],
         } 
@@ -253,25 +234,13 @@ excelRoute.get('/export', async (request, response) => {
           richText: [
             {
               text: ` datum `,
-              font: {
-                color: {
-                  argb: '00FF0000',
-                  theme: 1,
-                },
-              },
             },
           ],
         } 
         sheet.getCell('G13').value ={
           richText: [
             {
-              text:` datum `,
-              font: {
-                color: {
-                  argb: '00FF0000',
-                  theme: 1,
-                },
-              },
+              text:` datum `
             },
           ],
         }
@@ -283,36 +252,19 @@ excelRoute.get('/export', async (request, response) => {
             },
             {
               text:`${total.PlaniraniSatiPredavanja}`,
-              font: {
-                color: {
-                  argb: '00FF0000',
-                  theme: 1,
-                },
-              },
             },
             {
               text: ' S:',
             },
             {
               text:`${total.PlaniraniSatiSeminari}`,
-              font: {
-                color: {
-                  argb: '00FF0000',
-                  theme: 1,
-                },
-              },
+            
             },
             {
               text: '  V:',
             },
             {
               text:`${total.PlaniraniSatiVjezbe}`,
-              font: {
-                color: {
-                  argb: '00FF0000',
-                  theme: 1,
-                },
-              },
             },
           ],
         } 
@@ -349,23 +301,32 @@ excelRoute.get('/export', async (request, response) => {
   // ******** filling the main table ***********************************
   // ******************************************
   // ******************************************
-  // ******************************************
-
+  // *****************************************
         var len = (dataJSON.List1.length)  
         let start = 17
         for(let i=0; i <= len-1; i++){
+            table2Borders("A" + start.toString())
+            table2Borders("B" + start.toString())
+            table2Borders("C" + start.toString())
+            table2Borders("D" + start.toString())
+            table2Borders("E" + start.toString())
+            table2Borders("F" + start.toString())
+            table2Borders("G" + start.toString())
+            table2Borders("H" + start.toString())
+            table2Borders("I" + start.toString())
+            table2Borders("J" + start.toString())
+            table2Borders("K" + start.toString())
+            table2Borders("L" + start.toString())
+            table2Borders("M" + start.toString())
+            table2Borders("N" + start.toString())
+            sheet.getCell('N13').border = { right: {style:'thick', color: {argb:'#000000'}} }
+
             sheet.getCell("A" + start.toString()).alignment = { wrapText: true , horizontal: 'center' }  
             sheet.getCell("A" + start.toString()).value = `${i+1}`
             sheet.getCell("B" + start.toString()).value ={
               richText: [
                 {
                   text:`${dataList[i].NastavnikSuradnikNaziv}`,
-                  font: {
-                    color: {
-                      argb: '00FF0000',
-                      theme: 1,
-                    },
-                  },
                 },
               ],
             }  
@@ -374,12 +335,6 @@ excelRoute.get('/export', async (request, response) => {
               richText: [
                 {
                   text:`${dataList[i].ZvanjeNaziv}`,
-                  font: {
-                    color: {
-                      argb: '00FF0000',
-                      theme: 1,
-                    },
-                  },
                 },
               ],
             }  
@@ -387,13 +342,8 @@ excelRoute.get('/export', async (request, response) => {
             sheet.getCell("D"+ start.toString()).value = {
               richText: [
                 {
-                  text:`${dataList[i].NazivNastavnikStatus}`,
-                  font: {
-                    color: {
-                      argb: '00FF0000',
-                      theme: 1,
-                    },
-                  },
+                  text:`${dataList[i].NazivNastavnikStatus}`
+                
                 },
               ],
             }
@@ -401,13 +351,9 @@ excelRoute.get('/export', async (request, response) => {
             sheet.getCell("E"+ start.toString()).value ={
               richText: [
                 {
-                  text:`${dataList[i].PlaniraniSatiPredavanja}`,
-                  font: {
-                    color: {
-                      argb: '00FF0000',
-                      theme: 1,
-                    },
-                  },
+                  text:`${dataList[i].PlaniraniSatiPredavanja}`
+                 
+                  
                 },
               ],
             }  
@@ -416,12 +362,6 @@ excelRoute.get('/export', async (request, response) => {
               richText: [
                 {
                   text: `${dataList[i].PlaniraniSatiSeminari}`,
-                  font: {
-                    color: {
-                      argb: '00FF0000',
-                      theme: 1,
-                    },
-                  },
                 },
               ],
             } 
@@ -429,13 +369,7 @@ excelRoute.get('/export', async (request, response) => {
             sheet.getCell("G"+ start.toString()).value = {
               richText: [
                 {
-                  text:`${parseInt(dataList[i].PlaniraniSatiVjezbe)}`,
-                  font: {
-                    color: {
-                      argb: '00FF0000',
-                      theme: 1,
-                    },
-                  },
+                  text:`${parseInt(dataList[i].PlaniraniSatiVjezbe)}`
                 },
               ],
             }
@@ -450,7 +384,7 @@ excelRoute.get('/export', async (request, response) => {
 
         sheet.mergeCells("A" + start.toString() +':'+ 'C' + start.toString()) 
         sheet.getCell("A" + start.toString()).alignment = { wrapText: true,  vertical: "middle", horizontal: "center" }
-        sheet.getCell("A" + start.toString()).value ={
+        sheet.getCell("A" + start.toString()).value = {
           richText: [
           {
             text:`UKUPNO`,
@@ -460,30 +394,64 @@ excelRoute.get('/export', async (request, response) => {
           },
         ],
       } // has to be after for loop!
+
+//********************************
+ //*******************BORDERS THICK UKUPNO */
+
+    sheet.getCell("A"+start.toString()).border = { bottom: {style:'thick', color: {argb:'#000000'}},
+    top: {style:'thick', color: {argb:'#000000'}},
+    left: {style:'thick', color: {argb:'#000000'}}  }
+    sheet.getCell("D"+start.toString()).border = { bottom: {style:'thick', color: {argb:'#000000'}},
+    top: {style:'thick', color: {argb:'#000000'}},
+    left: {style:'thick', color: {argb:'#000000'}}  }
+    sheet.getCell("E"+start.toString()).border = { bottom: {style:'thick', color: {argb:'#000000'}},
+    top: {style:'thick', color: {argb:'#000000'}},
+    left: {style:'thick', color: {argb:'#000000'}}  }
+    sheet.getCell("F"+start.toString()).border = { bottom: {style:'thick', color: {argb:'#000000'}},
+    top: {style:'thick', color: {argb:'#000000'}},
+    left: {style:'thick', color: {argb:'#000000'}}  }
+    sheet.getCell("G"+start.toString()).border = { bottom: {style:'thick', color: {argb:'#000000'}},
+    top: {style:'thick', color: {argb:'#000000'}},
+    left: {style:'thick', color: {argb:'#000000'}}  }
+    sheet.getCell("H"+start.toString()).border = { bottom: {style:'thick', color: {argb:'#000000'}},
+    top: {style:'thick', color: {argb:'#000000'}},
+    left: {style:'thick', color: {argb:'#000000'}}  }
+    sheet.getCell("I"+start.toString()).border = { bottom: {style:'thick', color: {argb:'#000000'}},
+    top: {style:'thick', color: {argb:'#000000'}},
+    left: {style:'thick', color: {argb:'#000000'}}  }
+    sheet.getCell("J"+start.toString()).border = { bottom: {style:'thick', color: {argb:'#000000'}},
+    top: {style:'thick', color: {argb:'#000000'}},
+    left: {style:'thick', color: {argb:'#000000'}}  }
+    sheet.getCell("K"+start.toString()).border = { bottom: {style:'thick', color: {argb:'#000000'}},
+    top: {style:'thick', color: {argb:'#000000'}},
+    left: {style:'thick', color: {argb:'#000000'}}  }
+    sheet.getCell("L"+start.toString()).border = { bottom: {style:'thick', color: {argb:'#000000'}},
+    top: {style:'thick', color: {argb:'#000000'}},
+    left: {style:'thick', color: {argb:'#000000'}}  }
+    sheet.getCell("M"+start.toString()).border = { bottom: {style:'thick', color: {argb:'#000000'}},
+    top: {style:'thick', color: {argb:'#000000'}},
+    left: {style:'thick', color: {argb:'#000000'}}  }
+    sheet.getCell("N"+start.toString()).border = { bottom: {style:'thick', color: {argb:'#000000'}},
+    top: {style:'thick', color: {argb:'#000000'}},
+    left: {style:'thick', color: {argb:'#000000'}}  }
+
+
+//***************** */
+
+
         
         sheet.getCell("E"+ start.toString()).value ={
           richText: [
             {
-              text:`${total.PlaniraniSatiPredavanja}`,
-              font: {
-                color: {
-                  argb: '00FF0000',
-                  theme: 1,
-                },
-              },
+              text:`${total.PlaniraniSatiPredavanja}`
+            
             },
           ],
         } 
         sheet.getCell("F" + start.toString()).value ={
           richText: [
             {
-              text:`${total.PlaniraniSatiSeminari}`,
-              font: {
-                color: {
-                  argb: '00FF0000',
-                  theme: 1,
-                },
-              },
+              text:`${total.PlaniraniSatiSeminari}`
             },
           ],
         }  
@@ -491,12 +459,7 @@ excelRoute.get('/export', async (request, response) => {
           richText: [
             {
               text:`${total.PlaniraniSatiVjezbe}`,
-              font: {
-                color: {
-                  argb: '00FF0000',
-                  theme: 1,
-                },
-              },
+             
             },
           ],
         }  
@@ -520,12 +483,7 @@ excelRoute.get('/export', async (request, response) => {
             },
             {
               text:`${testData.prodekan1} `,
-              font: {
-                color: {
-                  argb: '00FF0000',
-                  theme: 1,
-                },
-              },
+           
             },
           ],
         } 
@@ -536,12 +494,7 @@ excelRoute.get('/export', async (request, response) => {
             },
             {
               text: ` ${testData.prodekan2} `,
-              font: {
-                color: {
-                  argb: '00FF0000',
-                  theme: 1,
-                },
-              },
+             
             },
           ],
         } 
@@ -552,12 +505,6 @@ excelRoute.get('/export', async (request, response) => {
             },
             {
               text:` ${testData.dekan} `,
-              font: {
-                color: {
-                  argb: '00FF0000',
-                  theme: 1,
-                },
-              },
             },
           ],
         } 
